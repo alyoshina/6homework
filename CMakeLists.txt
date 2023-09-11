@@ -5,7 +5,9 @@ project(06.homework)
 add_executable(container 
     main.cpp
     include/serial_container.h
+    include/ilist.h
     include/list.h
+    include/forward_list.h
     )
 
 target_include_directories(container PRIVATE
@@ -14,3 +16,4 @@ target_include_directories(container PRIVATE
 )
     
 set_target_properties(container PROPERTIES CXX_STANDARD 17 CXX_STANDARD_REQUIRED ON)
+

@@ -1,7 +1,7 @@
 #include <iostream>
 #include "serial_container.h"
 #include "list.h"
-
+#include "forward_list.h"
 
 template <typename T>
 std::ostream& operator<<(std::ostream& os, IContainer<T>& v) {
@@ -12,42 +12,57 @@ std::ostream& operator<<(std::ostream& os, IContainer<T>& v) {
     if (v.size()) {
         os << v[size - 1] << " ";
     }
-
     return os; 
 }
 
 template <typename T>
-void trim(IContainer<T>& v, std::initializer_list <int> l) {
-    int dec = 0;
-    for (int i : l) {
-        v.erase(i - dec);
-        dec++;
-    }
-}
+class ContainerTest {
+public:
+    ContainerTest(const char* name, T *container) : cont(container) {
+        test(name);
+        iterTest(name);
+    };
+    ~ ContainerTest() {
+        delete cont;
+    };
+    void trim(std::initializer_list <int> l) {
+        int dec = 0;
+        for (int i : l) {
+            cont->erase(i - dec);
+            dec++;
+        }
+    };
+    void test(const char* name) {
+        std::cout << "\n";
+        std::cout << name << ": " << *cont << std::endl;
+        std::cout << "size: " << cont->size() << std::endl;
 
-template <typename T>
-void test(const char* name, IContainer<T>& v)
-{
-    std::cout << name << ": " << v << std::endl;
-    std::cout << "size: " << v.size() << std::endl;
+        trim({2, 4, 6});
+        std::cout << "erase 3, 5, 7, result: " << *cont << std::endl;
 
-    trim(v, {2, 4, 6});
-    std::cout << "erase 3, 5, 7, result: " << v << std::endl;
+        cont->push_front(10);
+        std::cout << "push front value 10, result: " << *cont << std::endl;
 
-    v.push_front(10);
-    std::cout << "push front value 10, result: " << v << std::endl;
+        cont->insert(cont->size()/2, 20);
+        std::cout << "add element 20 to the middle, result: " << *cont << std::endl;
 
-    v.insert(v.size()/2, 20);
-    std::cout << "add element 20 to the middle, result: " << v << std::endl;
+        cont->push_back(30);
+        std::cout << "add element 30 to the end, result: " << *cont << std::endl;
+    };
+    void iterTest(const char* name) {
+        std::cout << "iterator use: ";
+        for (auto iter = cont->begin(); iter != cont->end(); ++iter) {
+            std::cout << *iter << " ";
+        }
+        std::cout << std::endl;
+    };
 
-    v.push_back(30);
-    std::cout << "add element 30 to the end, result: " << v << std::endl;
-}
+private:
+    T* cont;
+};
 
 int main(int argc, char **argv) {
-    Serial<int> serial{0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
-    List<int> list{0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
-
-    test("serial", serial);
-    test("list", list);
+    ContainerTest("serial", new Serial<int> {0, 1, 2, 3, 4, 5, 6, 7, 8, 9});
+    ContainerTest("list", new List<int> {0, 1, 2, 3, 4, 5, 6, 7, 8, 9});
+    ContainerTest("forwardList", new ForwardList<int> {0, 1, 2, 3, 4, 5, 6, 7, 8, 9});
 }

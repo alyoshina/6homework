@@ -2,33 +2,34 @@
 #include <iostream>
 
 template <typename T>
-List<T>::List() : IList<T>() {
+ForwardList<T>::ForwardList() : IList<T>() {
+
 }
 
 template <typename T>
-List<T>::List(std::initializer_list <T> l) : IList<T>() {
+ForwardList<T>::ForwardList(std::initializer_list <T> l) : IList<T>() {
     for (T value : l) {
         push_back(value);
     }
 }
 
 template <typename T>
-List<T>::List(const List& other) : IList<T>(){
+ForwardList<T>::ForwardList(const ForwardList& other) : IList<T>() {
     *this = other;
 }
 
 template <typename T>
-List<T>::List(List&& other) : IList<T>() {
+ForwardList<T>::ForwardList(ForwardList&& other) : IList<T>() {
     *this = std::move(other);
 }
 
 template <typename T>
-List<T>::~List() {
+ForwardList<T>::~ForwardList() {
     clear();
 }
 
 template <typename T>
-void List<T>::clear() {
+void ForwardList<T>::clear() {
     typename IList<T>::INode* node = this->m_first;
     while (node) {
         typename IList<T>::INode* next = node->next();
@@ -41,9 +42,9 @@ void List<T>::clear() {
 }
 
 template <typename T>
-List<T>& List<T>::operator=(const List<T>& rhs) {
+ForwardList<T>& ForwardList<T>::operator=(const ForwardList<T>& rhs) {
     if (&rhs != this) {
-        List<T> temp;
+        ForwardList<T> temp;
         typename IList<T>::INode* rhs_node = rhs.m_first;
         for (std::size_t i = 0; i < rhs.m_size; ++i, rhs_node = rhs_node->next()) {
             temp.push_back(rhs_node->data());
@@ -54,7 +55,7 @@ List<T>& List<T>::operator=(const List<T>& rhs) {
 }
 
 template <typename T>
-List<T>& List<T>::operator=(List<T>&& rhs) {
+ForwardList<T>& ForwardList<T>::operator=(ForwardList<T>&& rhs) {
     if (&rhs != this) {
         clear();
         this->move(&rhs);
@@ -63,61 +64,58 @@ List<T>& List<T>::operator=(List<T>&& rhs) {
 }
 
 template <typename T>
-void List<T>::push_front(const T& value) {
-    Node* new_node = new Node(nullptr, this->m_first, value);
+void ForwardList<T>::push_front(const T& value) {
+    Node* new_node = new Node(this->m_first, value);
     if (!this->m_last) {
         this->m_last = new_node;
-    }
-    if (this->m_first) {
-        this->m_first->setPrev(new_node);
     }
     this->m_first = new_node;
     this->m_size++;
 }
 
 template <typename T>
-void List<T>::push_back(const T& value) {
-    this->push_back_node(new Node{this->m_last, nullptr, value});
+void ForwardList<T>::push_back(const T& value) {
+    this->push_back_node(new Node(nullptr, value));
+    return;
 }
 
 template <typename T>
-void List<T>::insert(const std::size_t pos, const T& value) {
+void ForwardList<T>::insert(const std::size_t pos, const T& value) {
     if (pos >= this->m_size) {
-        throw std::out_of_range("List: out of range");
+        throw std::out_of_range("ForwardList: out of range");
     }
+    typename IList<T>::INode* prev_node = nullptr;
     typename IList<T>::INode* node = this->m_first;
-    for (std::size_t i = 0; i < this->m_size; ++i, node = node->next()) {
+    for (std::size_t i = 0; i < this->m_size; ++i, prev_node = node, node = node->next()) {
         if (pos == i) {
-            Node* new_node = new Node(node->prev(), node, value);
-            if (!node->prev()) {
-                this->m_first = new_node;
+            Node* new_node = new Node(node, value);
+            if (prev_node) {
+                prev_node->setNext(new_node);
             } else {
-                node->prev()->setNext(new_node);
+                this->m_first = new_node;
             }
-            node->setPrev(new_node);
             this->m_size++;
             break;
-        }   
+        }
     }
 }
 
 template <typename T>
-void List<T>::erase(const std::size_t pos) {
+void ForwardList<T>::erase(const std::size_t pos) {
     if (pos >= this->m_size) {
-        throw std::out_of_range("List: out of range");
+        throw std::out_of_range("ForwardList: out of range");
     }
+    typename IList<T>::INode* prev_node = nullptr;
     typename IList<T>::INode* node = this->m_first;
-    for (std::size_t i = 0; i < this->m_size; ++i, node = node->next()) {
+    for (std::size_t i = 0; i < this->m_size; ++i, prev_node = node, node = node->next()) {
         if (pos == i) {
-            if (!node->prev()) {
+            if (!prev_node) {
                 this->m_first = node->next();
             } else {
-                node->prev()->setNext(node->next());
+                prev_node->setNext(node->next());
             }       
             if (!node->next()) {
-                this->m_last = node->prev();
-            } else {
-                node->next()->setPrev(node->prev());
+                this->m_last = prev_node;
             }
             this->m_size--;
             delete node;
