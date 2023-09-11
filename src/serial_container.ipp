@@ -71,7 +71,7 @@ Serial<T>& Serial<T>::operator=(Serial<T>&& rhs) {
 }
 
 template <typename T>
-void Serial<T>::allocate_memory(const std::size_t size)
+void Serial<T>::allocate_memory(std::size_t size)
 {
     T* data = m_data;
     std::size_t capasity = m_capasity;
@@ -109,7 +109,7 @@ void Serial<T>::push_back(const T& value) {
 }
 
 template <typename T>
-void Serial<T>::insert(const std::size_t pos, const T& value) {
+void Serial<T>::insert(std::size_t pos, const T& value) {
     if (pos > m_size) {
         throw std::out_of_range("Serial: out of range");
     }
@@ -121,7 +121,7 @@ void Serial<T>::insert(const std::size_t pos, const T& value) {
 }
 
 template <typename T>
-void Serial<T>::erase(const std::size_t pos) {
+void Serial<T>::erase(std::size_t pos) {
     if (pos >= m_size) {
         throw std::out_of_range("Serial: out of range");
     }
@@ -142,7 +142,7 @@ std::size_t Serial<T>::size() const {
 }
 
 template <typename T>
-T& Serial<T>::operator[] (const std::size_t pos) const {
+T& Serial<T>::operator[] (std::size_t pos) const {
     if (pos >= m_size) {
         throw std::out_of_range("Serial: out of range"); 
     }

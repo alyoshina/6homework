@@ -9,13 +9,7 @@ class IList : public IContainer <T> {
 
 public:
     IList();
-    virtual ~IList() = default;
 
-    virtual void push_front(const T& value) = 0;
-    virtual void push_back(const T& value) = 0;
-    virtual void insert(const std::size_t pos, const T& value) = 0;
-    virtual void erase(const std::size_t pos) = 0;
-    virtual void clear() = 0;
     std::size_t size() const override;
     T& operator[] (std::size_t pos) const override;
 

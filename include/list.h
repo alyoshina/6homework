@@ -14,11 +14,11 @@ public:
 
     void push_front(const T& value) override;
     void push_back(const T& value) override;
-    void insert(const std::size_t pos, const T& value) override;
-    void erase(const std::size_t pos) override;
+    void insert(std::size_t pos, const T& value) override;
+    void erase(std::size_t pos) override;
     void clear() override;
-    List<T>& operator=(const List<T>& rhs);
-    List<T>& operator=(List<T>&& rhs);
+    virtual List<T>& operator=(const List<T>& rhs);
+    virtual List<T>& operator=(List<T>&& rhs);
 
 protected:
     class Node : public IList<T>::INode {

@@ -15,13 +15,13 @@ public:
 
     void push_front(const T& value) override;
     void push_back(const T& value) override;
-    void insert(const std::size_t pos, const T& value) override;
-    void erase(const std::size_t pos) override;
+    void insert(std::size_t pos, const T& value) override;
+    void erase(std::size_t pos) override;
     void clear() override;
     std::size_t size() const override;
     T& operator[] (std::size_t pos) const override;
-    Serial<T>& operator=(const Serial<T>& rhs);
-    Serial<T>& operator=(Serial<T>&& rhs);
+    virtual Serial<T>& operator=(const Serial<T>& rhs);
+    virtual Serial<T>& operator=(Serial<T>&& rhs);
 
 private:
     std::size_t m_size;
@@ -29,7 +29,7 @@ private:
     const std::size_t min_capasity{5};
     const double m_coeff{1.6};
     T* m_data;
-    void allocate_memory(const std::size_t size);
+    void allocate_memory(std::size_t size);
 
 public:
     struct Iterator {
