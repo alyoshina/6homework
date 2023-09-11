@@ -12,7 +12,7 @@ public:
     virtual ~IList() = default;
 
     virtual void push_front(const T& value) = 0;
-    virtual void push_back(const T& value) {std::cout << "push_back IList" << std::endl;}; //=0
+    virtual void push_back(const T& value) = 0;
     virtual void insert(const std::size_t pos, const T& value) = 0;
     virtual void erase(const std::size_t pos) = 0;
     virtual void clear() = 0;
