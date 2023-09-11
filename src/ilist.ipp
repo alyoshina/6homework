@@ -37,7 +37,7 @@ void IList<T>::push_back_node(INode* node) {
 }
 
 template <typename T>
-T& IList<T>::operator[] (std::size_t pos) const {
+T& IList<T>::operator[] (const std::size_t pos) const {
     if (pos >= m_size) {
         throw std::out_of_range("IList: out of range"); 
     }

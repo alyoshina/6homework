@@ -80,7 +80,7 @@ void ForwardList<T>::push_back(const T& value) {
 }
 
 template <typename T>
-void ForwardList<T>::insert(std::size_t pos, const T& value) {
+void ForwardList<T>::insert(const std::size_t pos, const T& value) {
     if (pos >= this->m_size) {
         throw std::out_of_range("ForwardList: out of range");
     }
@@ -101,7 +101,7 @@ void ForwardList<T>::insert(std::size_t pos, const T& value) {
 }
 
 template <typename T>
-void ForwardList<T>::erase(std::size_t pos) {
+void ForwardList<T>::erase(const std::size_t pos) {
     if (pos >= this->m_size) {
         throw std::out_of_range("ForwardList: out of range");
     }
