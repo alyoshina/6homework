@@ -18,7 +18,6 @@ public:
     virtual void clear() = 0;
     std::size_t size() const override;
     T& operator[] (std::size_t pos) const override;
-    IList<T>& operator=(IList<T>&& rhs);
 
 protected:
     class INode {
