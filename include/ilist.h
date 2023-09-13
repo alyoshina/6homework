@@ -18,6 +18,7 @@ protected:
 
     public:
         INode() {};
+        virtual ~INode() {};
         virtual INode* prev() = 0;
         virtual INode* next() = 0;
         virtual T& data() = 0;

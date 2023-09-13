@@ -27,6 +27,7 @@ protected:
         Node(typename IList<T>::INode* n, T d)
             : m_next(n)
             , m_data(d) { };
+        ~Node() {};
         typename IList<T>::INode* prev() { return nullptr; };
         typename IList<T>::INode* next() { return m_next; };
         T& data() { return m_data; };
